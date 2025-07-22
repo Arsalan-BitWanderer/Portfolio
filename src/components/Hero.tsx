@@ -29,7 +29,8 @@ const Hero = () => {
           end: "bottom top",
           scrub: true
         }
-      }, "-=0.8");
+      }
+    );
     gsap.to(".hero-bg", {
       yPercent: -20,
       duration: 2,
