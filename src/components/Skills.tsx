@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaReact, FaDatabase, FaMobile, FaRobot, FaCode, FaPaintBrush } from 'react-icons/fa';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Skills = () => {
   const skillCategories = [
@@ -36,8 +40,40 @@ const Skills = () => {
     }
   ];
 
+  useEffect(() => {
+    gsap.from(".skill-category", {
+      scrollTrigger: {
+        trigger: "#skills",
+        start: "top center",
+        end: "bottom bottom",
+        scrub: true,
+        markers: false
+      },
+      y: 50,
+      opacity: 0,
+      stagger: 0.2,
+      duration: 0.5,
+      ease: "power3.out"
+    });
+
+    gsap.from(".skill", {
+      scrollTrigger: {
+        trigger: "#skills",
+        start: "top center",
+        end: "bottom bottom",
+        scrub: true,
+        markers: false
+      },
+      opacity: 0,
+      y: 20,
+      stagger: 0.1,
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  }, []);
+
   return (
-    <section id="skills" className="py-20 bg-light">
+    <section id="skills" className="py-20 bg-darkbg text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -46,8 +82,8 @@ const Skills = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-dark mb-4">Skills & Expertise</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Skills & Expertise</h2>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             A comprehensive overview of my technical skills and areas of expertise
           </p>
         </motion.div>
@@ -60,7 +96,7 @@ const Skills = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+              className="bg-darkcard p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow skill-category"
             >
               <div className="text-4xl text-primary mb-4">{category.icon}</div>
               <h3 className="text-xl font-semibold mb-4">{category.title}</h3>
@@ -69,7 +105,7 @@ const Skills = () => {
                   <motion.span
                     key={skillIndex}
                     whileHover={{ scale: 1.05 }}
-                    className="bg-light text-dark px-3 py-1 rounded-full text-sm font-medium"
+                    className="bg-light text-dark px-3 py-1 rounded-full text-sm font-medium skill"
                   >
                     {skill}
                   </motion.span>
@@ -86,7 +122,7 @@ const Skills = () => {
           viewport={{ once: true }}
           className="mt-16 text-center"
         >
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg text-gray-300 max-w-3xl mx-auto">
             I continuously update my skill set to stay current with the latest technologies and best practices in software development.
             My diverse expertise allows me to tackle complex projects and deliver high-quality solutions.
           </p>
@@ -96,4 +132,4 @@ const Skills = () => {
   );
 };
 
-export default Skills; 
+export default Skills;

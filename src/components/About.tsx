@@ -1,9 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaLaptopCode, FaPaintBrush, FaMobile, FaBrain } from 'react-icons/fa';
-import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap';
-import { useTheme } from '../context/ThemeContext';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 interface Experience {
   icon: JSX.Element;
@@ -12,12 +11,6 @@ interface Experience {
 }
 
 const About = () => {
-  const { darkMode } = useTheme();
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
   const titleRef = useRef<HTMLHeadingElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
@@ -34,34 +27,56 @@ const About = () => {
 
   // GSAP animations
   useEffect(() => {
-    if (inView) {
-      // Animate title and text
-      gsap.from(titleRef.current, {
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out"
-      });
-      
-      gsap.from(textRef.current, {
-        y: 30,
-        opacity: 0,
-        duration: 1,
-        delay: 0.3,
-        ease: "power3.out"
-      });
-      
-      // Animate cards with stagger
-      gsap.from(cardsRef.current, {
-        y: 50,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.2,
-        ease: "back.out(1.7)",
-        delay: 0.5
-      });
-    }
-  }, [inView]);
+    gsap.from(titleRef.current, {
+      y: 50,
+      opacity: 0,
+      duration: 1,
+      ease: "power3.out"
+    });
+
+    gsap.from(textRef.current, {
+      y: 30,
+      opacity: 0,
+      duration: 1,
+      delay: 0.3,
+      ease: "power3.out"
+    });
+
+    // Animate cards with stagger
+    gsap.from(cardsRef.current, {
+      y: 50,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "back.out(1.7)",
+      delay: 0.5
+    });
+  }, []);
+
+  useEffect(() => {
+    gsap.to("#about", {
+      yPercent: -20,
+      scrollTrigger: {
+        trigger: "#about",
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true
+      }
+    });
+
+    gsap.from(".card", {
+      y: 100,
+      opacity: 0,
+      stagger: 0.2,
+      duration: 1,
+      scrollTrigger: {
+        trigger: ".card-container",
+        start: "top center",
+        end: "bottom bottom",
+        scrub: true
+      }
+    });
+  }, []);
 
   const experiences: Experience[] = [
     {
@@ -91,12 +106,12 @@ const About = () => {
     const cards = cardsRef.current;
     const mouseX = e.clientX / window.innerWidth - 0.5;
     const mouseY = e.clientY / window.innerHeight - 0.5;
-    
+
     cards.forEach((card, index) => {
       const depth = 20 * (index + 1);
       const moveX = mouseX * depth;
       const moveY = mouseY * depth;
-      
+
       gsap.to(card, {
         x: moveX,
         y: moveY,
@@ -107,43 +122,38 @@ const About = () => {
   };
 
   return (
-    <section 
-      id="about" 
-      ref={ref}
+    <section
+      id="about"
       onMouseMove={parallaxEffect}
-      className={`py-20 ${darkMode ? 'bg-darkbg' : 'bg-white'}`}
+      className="py-20 bg-darkbg text-white"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 
+          <h2
             ref={titleRef}
-            className={`text-3xl md:text-4xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-dark'}`}
+            className="text-3xl md:text-4xl font-bold mb-4 text-white"
           >
             About Me
           </h2>
-          <p 
+          <p
             ref={textRef}
-            className={`text-xl max-w-3xl mx-auto ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}
+            className="text-xl max-w-3xl mx-auto text-gray-300"
           >
-            I'm a passionate full-stack developer with expertise in web development, mobile applications, and AI solutions. 
+            I'm a passionate full-stack developer with expertise in web development, mobile applications, and AI solutions.
             My journey in software development has equipped me with a diverse skill set that allows me to create comprehensive solutions.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {experiences.map((exp, index) => (
-            <div
-              key={index}
-              ref={addToRefs}
-              className={`p-6 rounded-xl shadow-lg transition-all card-hover transform ${
-                darkMode 
-                  ? 'bg-darkcard text-white hover:glow' 
-                  : 'bg-light text-dark hover:shadow-xl'
-              }`}
-            >
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 card-container">
+      {experiences.map((exp, index) => (
+        <div
+          key={index}
+          ref={addToRefs}
+          className="card p-6 rounded-xl shadow-lg transition-all card-hover transform bg-darkcard text-white hover:glow"
+        >
               <div className="text-4xl text-primary mb-4">{exp.icon}</div>
               <h3 className="text-xl font-semibold mb-3">{exp.title}</h3>
-              <p className={darkMode ? 'text-gray-300' : 'text-gray-600'}>
+              <p className="text-gray-300">
                 {exp.description}
               </p>
             </div>
@@ -157,8 +167,8 @@ const About = () => {
           viewport={{ once: true }}
           className="mt-16 text-center"
         >
-          <p className={`text-lg max-w-3xl mx-auto ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-            With a strong foundation in both frontend and backend development, I bring a holistic approach to every project. 
+          <p className="text-lg max-w-3xl mx-auto text-gray-300">
+            With a strong foundation in both frontend and backend development, I bring a holistic approach to every project.
             My experience in UI/UX design ensures that the applications I build are not only functional but also provide an exceptional user experience.
           </p>
         </motion.div>
@@ -167,4 +177,4 @@ const About = () => {
   );
 };
 
-export default About; 
+export default About;

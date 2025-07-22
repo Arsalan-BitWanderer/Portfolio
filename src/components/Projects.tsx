@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaDesktop, FaMobile, FaRobot, FaShoppingCart, FaCut } from 'react-icons/fa';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Projects = () => {
   const projects = [
@@ -41,8 +45,39 @@ const Projects = () => {
     }
   ];
 
+  useEffect(() => {
+    gsap.from(".project-card", {
+      scrollTrigger: {
+        trigger: "#projects",
+        start: "top center",
+        end: "bottom bottom",
+        scrub: true,
+        markers: false
+      },
+      y: 50,
+      opacity: 0,
+      stagger: 0.2,
+      duration: 0.5,
+      ease: "power3.out"
+    });
+
+    gsap.from(".project-description", {
+      scrollTrigger: {
+        trigger: ".project-card",
+        start: "top center",
+        end: "bottom bottom",
+        scrub: true,
+        markers: false
+      },
+      opacity: 0,
+      y: 20,
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  }, []);
+
   return (
-    <section id="projects" className="py-20 bg-white">
+    <section id="projects" className="py-20 bg-darkbg text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -51,9 +86,10 @@ const Projects = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-dark mb-4">Featured Projects</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            A showcase of my recent work and projects across different domains
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Featured Projects</h2>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            A showcase of my recent work and projects across different technologies
+            and domains while maintaining high standards of quality and user experience.
           </p>
         </motion.div>
 
@@ -65,12 +101,12 @@ const Projects = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="bg-light rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+              className="project-card bg-darkcard rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow hover:scale-105"
             >
               <div className="p-6">
                 <div className="text-4xl text-primary mb-4">{project.icon}</div>
                 <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                <p className="text-gray-600 mb-4">{project.description}</p>
+                <p className="project-description text-gray-300 mb-4">{project.description}</p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.technologies.map((tech, techIndex) => (
                     <span
@@ -94,7 +130,7 @@ const Projects = () => {
           viewport={{ once: true }}
           className="mt-16 text-center"
         >
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg text-gray-300 max-w-3xl mx-auto">
             Each project represents a unique challenge and solution, showcasing my ability to work across different technologies
             and domains while maintaining high standards of quality and user experience.
           </p>
@@ -104,4 +140,4 @@ const Projects = () => {
   );
 };
 
-export default Projects; 
+export default Projects;
