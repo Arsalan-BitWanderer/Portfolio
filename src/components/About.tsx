@@ -1,177 +1,50 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { FaLaptopCode, FaPaintBrush, FaMobile, FaBrain } from 'react-icons/fa';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-interface Experience {
-  icon: JSX.Element;
-  title: string;
-  description: string;
-}
+import Typewriter from './UI/Typewriter';
+import TextHoverEffect from './UI/TextHoverEffect';
 
 const About = () => {
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const textRef = useRef<HTMLParagraphElement>(null);
-  const cardsRef = useRef<HTMLDivElement[]>([]);
-
-  // Reset the refs array
-  cardsRef.current = [];
-
-  // Add elements to the refs array
-  const addToRefs = (el: HTMLDivElement | null) => {
-    if (el && !cardsRef.current.includes(el)) {
-      cardsRef.current.push(el);
-    }
-  };
-
-  // GSAP animations
-  useEffect(() => {
-    gsap.from(titleRef.current, {
-      y: 50,
-      opacity: 0,
-      duration: 1,
-      ease: "power3.out"
-    });
-
-    gsap.from(textRef.current, {
-      y: 30,
-      opacity: 0,
-      duration: 1,
-      delay: 0.3,
-      ease: "power3.out"
-    });
-
-    // Animate cards with stagger
-    gsap.from(cardsRef.current, {
-      y: 50,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.2,
-      ease: "back.out(1.7)",
-      delay: 0.5
-    });
-  }, []);
-
-  useEffect(() => {
-    gsap.to("#about", {
-      yPercent: -20,
-      scrollTrigger: {
-        trigger: "#about",
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true
-      }
-    });
-
-    gsap.from(".card", {
-      y: 100,
-      opacity: 0,
-      stagger: 0.2,
-      duration: 1,
-      scrollTrigger: {
-        trigger: ".card-container",
-        start: "top center",
-        end: "bottom bottom",
-        scrub: true
-      }
-    });
-  }, []);
-
-  const experiences: Experience[] = [
-    {
-      icon: <FaLaptopCode />,
-      title: "Full Stack Development",
-      description: "Expert in building scalable web applications using React.js and .NET framework. Specialized in creating robust backend systems and intuitive frontend interfaces."
-    },
-    {
-      icon: <FaPaintBrush />,
-      title: "UI/UX Design",
-      description: "Certified UI/UX designer with a keen eye for creating beautiful, user-friendly interfaces. Focus on modern design principles and user-centered development."
-    },
-    {
-      icon: <FaMobile />,
-      title: "Mobile Development",
-      description: "Certified app developer with expertise in React Native and Flutter. Creating cross-platform mobile applications with native-like performance."
-    },
-    {
-      icon: <FaBrain />,
-      title: "AI & Automation",
-      description: "Working on cutting-edge AI projects including email responders, call agents, and automation solutions. Leveraging AI to create intelligent systems."
-    }
-  ];
-
-  // Parallax effect for cards
-  const parallaxEffect = (e: React.MouseEvent<HTMLElement>) => {
-    const cards = cardsRef.current;
-    const mouseX = e.clientX / window.innerWidth - 0.5;
-    const mouseY = e.clientY / window.innerHeight - 0.5;
-
-    cards.forEach((card, index) => {
-      const depth = 20 * (index + 1);
-      const moveX = mouseX * depth;
-      const moveY = mouseY * depth;
-
-      gsap.to(card, {
-        x: moveX,
-        y: moveY,
-        duration: 1,
-        ease: "power2.out"
-      });
-    });
-  };
-
   return (
-    <section
-      id="about"
-      onMouseMove={parallaxEffect}
-      className="py-20 bg-darkbg text-white"
-    >
+    <section id="about" className="py-28 bg-transparent text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2
-            ref={titleRef}
-            className="text-3xl md:text-4xl font-bold mb-4 text-white"
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            viewport={{ once: false }}
           >
-            About Me
-          </h2>
-          <p
-            ref={textRef}
-            className="text-xl max-w-3xl mx-auto text-gray-300"
-          >
-            I'm a passionate full-stack developer with expertise in web development, mobile applications, and AI solutions.
-            My journey in software development has equipped me with a diverse skill set that allows me to create comprehensive solutions.
-          </p>
+            <h2 className="text-4xl md:text-6xl font-black uppercase mb-4">
+              <TextHoverEffect>Hi, I'm Arsalan</TextHoverEffect>
+            </h2>
+            <h3 className="text-2xl md:text-3xl font-bold text-purple-400 mb-8">
+              <TextHoverEffect>Web Developer</TextHoverEffect>
+            </h3>
+            <Typewriter
+              text="Full Stack Developer / React JS, Next JS / .Net Core "
+              className="text-lg text-gray-400 leading-relaxed"
+              delay={2}
+            />
+          </motion.div>
+          <div className="text-lg text-gray-400 leading-relaxed space-y-4">
+            <Typewriter
+              text="Professionally connected with the web development industry."
+              delay={3}
+            />
+            <Typewriter
+              text="Problem solver, well-organised person, loyal employee with high attention to detail."
+              delay={4}
+            />
+            <Typewriter
+              text="Fan of Boxing, outdoor activities, video games, and coding of course."
+              delay={5}
+            />
+            <Typewriter
+              text="Interested in the entire frontend spectrum and working on ambitious projects with interesting people."
+              delay={6}
+            />
+          </div>
         </div>
-
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 card-container">
-      {experiences.map((exp, index) => (
-        <div
-          key={index}
-          ref={addToRefs}
-          className="card p-6 rounded-xl shadow-lg transition-all card-hover transform bg-darkcard text-white hover:glow"
-        >
-              <div className="text-4xl text-primary mb-4">{exp.icon}</div>
-              <h3 className="text-xl font-semibold mb-3">{exp.title}</h3>
-              <p className="text-gray-300">
-                {exp.description}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="mt-16 text-center"
-        >
-          <p className="text-lg max-w-3xl mx-auto text-gray-300">
-            With a strong foundation in both frontend and backend development, I bring a holistic approach to every project.
-            My experience in UI/UX design ensures that the applications I build are not only functional but also provide an exceptional user experience.
-          </p>
-        </motion.div>
       </div>
     </section>
   );

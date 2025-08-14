@@ -1,0 +1,24 @@
+.contact-popover {
+  position: fixed;
+  top: 5%;
+  left: 30%;
+  transform: translate(-50%, calc(-50% - 100px));
+  background: rgba(17, 24, 39, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 2rem;
+  z-index: 50;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 0 30px rgba(160, 32, 240, 0.5);
+}
+
+.contact-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 40;
+}

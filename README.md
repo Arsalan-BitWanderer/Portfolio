@@ -84,6 +84,21 @@ src/
 
 The site can be deployed to any static hosting service like Vercel, Netlify, or GitHub Pages.
 
+## Contact form configuration
+
+Create a `.env` file in the project root (do not commit it) with:
+
+```
+REACT_APP_EMAILJS_SERVICE_ID=your_service_id
+REACT_APP_EMAILJS_TEMPLATE_ID=your_template_id
+REACT_APP_EMAILJS_PUBLIC_KEY=your_public_key
+REACT_APP_CONTACT_TO_EMAIL=mohdarsal232@gmail.com
+```
+
+Notes:
+- Environment variables must start with `REACT_APP_` to be exposed in Create React App.
+- Basic validation, a hidden honeypot field, and a 60-second client-side rate limit are enabled to reduce spam.
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
