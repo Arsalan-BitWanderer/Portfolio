@@ -92,7 +92,7 @@ Create a `.env` file in the project root (do not commit it) with:
 REACT_APP_EMAILJS_SERVICE_ID=your_service_id
 REACT_APP_EMAILJS_TEMPLATE_ID=your_template_id
 REACT_APP_EMAILJS_PUBLIC_KEY=your_public_key
-REACT_APP_CONTACT_TO_EMAIL=mohdarsal232@gmail.com
+REACT_APP_CONTACT_TO_EMAIL=
 ```
 
 Notes:
